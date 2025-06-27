@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoogse.Schema;
+
+const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
 const userSchema = new Schema({
@@ -32,7 +33,7 @@ const purchaseSchema = new Schema({
 
 const userModel = mongoose.model("user", userSchema);
 const adminModel = mongoose.model("admin", adminSchema);
-const courseModel = mongoose.model("user", courseSchema);
+const courseModel = mongoose.model("course", courseSchema);
 const purchaseModel = mongoose.model("purchase", purchaseSchema);
 
 module.exports = {
