@@ -10,6 +10,7 @@ app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/course", courseRouter);
 
 async function main() {
+    // TODO: MAKE IT IN DOTENV FILE
   await mongoose.connect(
     ""
   );
