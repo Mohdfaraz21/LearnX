@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { userModel } = require("../db");
 const jwt = require("jsonwebtoken");
-const JWT_USER_PASSWORD = "user192";
+const { JWT_USER_PASSWORD } = require("../config");
 
 const userRouter = Router();
 
@@ -32,7 +32,7 @@ userRouter.post("/signup", async function (req, res) {
 });
 userRouter.post("/signin", async function (req, res) {
   const { email, password } = req.body;
- //TODO: ideally password should be hashed, hence you can't compare the user provided password and the db password.
+  //TODO: ideally password should be hashed, hence you can't compare the user provided password and the db password.
   const user = await userModel.findOne({
     email: email,
     password: password,
@@ -50,7 +50,7 @@ userRouter.post("/signin", async function (req, res) {
     });
   } else {
     res.status(403).json({
-      message: "incorrect credentials"
+      message: "incorrect credentials",
     });
   }
 });

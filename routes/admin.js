@@ -2,9 +2,11 @@ const { Router } = require("express");
 const adminRouter = Router();
 const { adminModel } = require("../db");
 const jwt = require("jsonwebtoken");
-const JWT_ADMIN_PASSWORD = "admin250"
 
-adminRouter.post("/signup",async function (req, res) {
+const { JWT_ADMIN_PASSWORD } = require("../config");
+const { adminMiddleware } = require("../middleware/admin");
+
+adminRouter.post("/signup", async function (req, res) {
   //TODO: Adding zod validation
   const { email, password, firstName, lastName } = req.body;
   //TODO: Hash the password with bcrypt so plain text password should not be in db
@@ -29,9 +31,9 @@ adminRouter.post("/signup",async function (req, res) {
     });
   }
 });
-adminRouter.post("/signin",async function (req, res) {
-    const { email, password } = req.body;
- //TODO: ideally password should be hashed, hence you can't compare the user provided password and the db password.
+adminRouter.post("/signin", async function (req, res) {
+  const { email, password } = req.body;
+  //TODO: ideally password should be hashed, hence you can't compare the user provided password and the db password.
   const admin = await adminModel.findOne({
     email: email,
     password: password,
@@ -49,21 +51,25 @@ adminRouter.post("/signin",async function (req, res) {
     });
   } else {
     res.status(403).json({
-      message: "incorrect credentials"
+      message: "incorrect credentials",
     });
   }
 });
 
-adminRouter.post("/course", function (req, res) {
+adminRouter.post("/course", adminMiddleware, async function (req, res) {
+  const adminId = req.userId;
+  const { title, description, imageUrl, price } = req.body;
+
+  const course =  await courseModel.create({
+    title,description,imageUrl, price, creatorId: adminId
+  })
+
   res.json({
-    message: "admin course",
+    message: "course created",
+    courseId: course._id 
   });
 });
-adminRouter.put("/course", function (req, res) {
-  res.json({
-    message: "admin course",
-  });
-});
+
 adminRouter.get("/course/all", function (req, res) {
   res.json({
     message: "admin course",
