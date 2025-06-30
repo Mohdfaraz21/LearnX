@@ -1,3 +1,6 @@
+require ('dotenv').config()
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -17,9 +20,7 @@ app.use("/api/v1/course", courseRouter);
 
 async function main() {
     // TODO: MAKE IT IN DOTENV FILE
-  await mongoose.connect(
-    ""
-  );
+  await mongoose.connect(process.env.MONGO_URL);
   app.listen(3000);
   console.log("Listening port 3000");
   console.log("DB connected");
